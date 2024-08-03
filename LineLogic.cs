@@ -29,7 +29,6 @@ namespace SVGToGCodeGUI
                         col = findLine(row, col, bmp, lines);
                     }
                 }
-
                 else
                 {
                     for (int col = bmp.Width - 1; col >= 0; col--)
@@ -37,7 +36,6 @@ namespace SVGToGCodeGUI
                         col = findLine(row, col, bmp, lines);
                     }
                 }
-
             }
             lines.Add("G00 X0 Y0 Z50\n");
 
@@ -48,10 +46,6 @@ namespace SVGToGCodeGUI
         private static int findLine(int row, int col, Bitmap bmp, List<string> lines)
         {
             Color pixel = bmp.GetPixel(col, row);
-            int startLineX;
-            int startLineY;
-            int endLineX;
-            int endLineY;
 
             if (pixel.A != 0 || pixel.R != 0 || pixel.G != 0 || pixel.B != 0)
             {
@@ -61,22 +55,17 @@ namespace SVGToGCodeGUI
 
             if (pixel.A != 0 && pixel.R < 255 && pixel.G < 255 && pixel.B < 255)
             {
-                startLineX = row;
-                startLineY = col;
+                int startLineY = col;
 
-                int lineEndY;
-                lineEndY = SearchForLineEnd(startLineX, startLineY, bmp);
-                col = lineEndY;
+                col = SearchForLineEnd(row, startLineY, bmp);
 
-                endLineX = row;
-                endLineY = col;
-                lines.Add("G00 X" + startLineX + " Y" + startLineY + " Z15 \n");
-                lines.Add("G00 X" + startLineX + " Y" + startLineY + " Z10 \n");
-                Debug.Print("G00 X" + startLineX + " Y" + startLineY + " Z10 \n");
+                lines.Add("G00 X" + row + " Y" + startLineY + " Z15 \n");
+                lines.Add("G00 X" + row + " Y" + startLineY + " Z10 \n");
+                Debug.Print("G00 X" + row + " Y" + startLineY + " Z10 \n");
 
-                lines.Add("G01 X" + endLineX + " Y" + endLineY + " Z10 \n");
-                lines.Add("G01 X" + endLineX + " Y" + endLineY + " Z15 \n");
-                Debug.Print("G01 X" + endLineX + " Y" + endLineY + " Z04 \n");
+                lines.Add("G01 X" + row + " Y" + col + " Z10 \n");
+                lines.Add("G01 X" + row + " Y" + col + " Z15 \n");
+                Debug.Print("G01 X" + row + " Y" + col + " Z04 \n");
             }
             return col;
         }
@@ -93,19 +82,19 @@ namespace SVGToGCodeGUI
                         return y - 1;
                     }
                 }
-            return bmp.Width - 1;
+                return bmp.Width - 1;
             } 
             else
             {
-                 for (int y = startLineY; y >= 0; y--)
-                 {
+                for (int y = startLineY; y >= 0; y--)
+                {
                     pixel = bmp.GetPixel(y, startLineX);
                     if (pixel.R == 255 && pixel.G == 255 && pixel.B == 255 || pixel.A == 0)
                     {
                         return y + 1;
                     }
-                 }
-            return 0;
+                }
+                return 0;
             }
         }
     }

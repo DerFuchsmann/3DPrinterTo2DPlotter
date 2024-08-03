@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace SVGToGCodeGUI
 {
-    internal abstract class FileManager
+    internal class FileManager
     {
         public static string GetFilePath()
         {

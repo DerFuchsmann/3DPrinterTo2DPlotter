@@ -10,24 +10,27 @@ namespace SVGToGCodeGUI
         private string? data;
         private readonly object sync;
         private Boolean printFlag;
-        public SendGCodeManager() 
+        public SendGCodeManager()
         {
             this.data = null;
             this.sync = new object();
             this.printFlag = false;
         }
-        public void setPrintFlag(Boolean printFlag)
+
+        public void CancelSendingGCode()
         {
-            this.printFlag = printFlag;
+            this.printFlag = false;
         }
+
         public void ManageSendingGCode(List<string>lines)
         {
+            this.printFlag = true;
             Task task = new Task(() =>
             {
                 var ports = SerialPort.GetPortNames();
                 if (ports.Length > 0)
                 {
-                SerialPort port = new SerialPort(ports[0]);
+                    SerialPort port = new SerialPort(ports[0]);
                     try
                     {
                         port.Open();
@@ -62,11 +65,13 @@ namespace SVGToGCodeGUI
                             }
 
                         }
-                        port.Close();
                     }
                     catch (Exception ex)
                     {
                         Debug.Print(ex.StackTrace);
+                    } finally
+                    {
+                        port.Close();
                     }
                 }
                 else

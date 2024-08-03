@@ -14,11 +14,11 @@ namespace SVGToGCodeGUI
         public Bitmap bmp;
         private List<string> lines = new List<string>();
         private bool writerFlag;
-        private SendGCodeManager GCodeSender;
+        private SendGCodeManager gCodeSender;
         public MainWindow()
         {
             InitializeComponent();
-            GCodeSender = new SendGCodeManager();
+            gCodeSender = new SendGCodeManager();
             writerFlag = false;
         }
         private void LoadSVG(object sender, RoutedEventArgs e)
@@ -49,7 +49,6 @@ namespace SVGToGCodeGUI
                 setList(LineLogic.SearchForLines(this.bmp));
                 SendGCodeButton.IsEnabled = true;
                 printLines();
-                GCodeSender.setPrintFlag(true);
             }
             else
             {
@@ -59,8 +58,8 @@ namespace SVGToGCodeGUI
 
         private void SendGCode(object sender, RoutedEventArgs e)
         {
-            GCodeSender.LineEvent += new PercentEventHandler(LineSent);
-            this.GCodeSender.ManageSendingGCode(lines);
+            gCodeSender.LineEvent += new PercentEventHandler(LineSent);
+            this.gCodeSender.ManageSendingGCode(lines);
         }
 
         public async void LineSent(object sender, LineSentEventArgs e)
@@ -109,10 +108,8 @@ namespace SVGToGCodeGUI
         }
         private void DeletButtonClick(object sender, RoutedEventArgs e)
         {
-            lines.RemoveRange(0, lines.Count);
             AusgabeGcode.Text = "Vorgang abgebrochen!";
-            GCodeSender.setPrintFlag(false);
-            SendGCodeButton.IsEnabled = false;
+            gCodeSender.CancelSendingGCode();
         }
     }
 }
