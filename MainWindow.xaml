@@ -1,0 +1,69 @@
+﻿<Window x:Class="SVGToGCodeGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:svg="http://sharpvectors.codeplex.com/runtime/"
+        xmlns:local="clr-namespace:SVGToGCodeGUI"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" MinHeight="390" MinWidth="700">
+  
+    <Grid>
+
+            <!--MainWindow Row/Columns-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!--Überschrift-->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="3" Height="30">
+            <Label >SVG to GCode Converter</Label>
+        </StackPanel>
+
+        <!--Menu-->
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+
+            </Grid.ColumnDefinitions>
+            <Button Margin="10" Content="Load SVG" Grid.Column="0" Grid.ColumnSpan="2" Click="LoadSVG"/>
+            <Button x:Name="GCodeButton"  Margin="10" Content="G-Code" Grid.Column="2" Grid.ColumnSpan="2" IsEnabled="False" Click="GCodeButton_Click"/>
+
+        </Grid>
+
+        <TextBox x:Name="DateiPfad" Margin="10" Grid.Row="2" >
+            DateiPfad
+        </TextBox>
+        <Button x:Name="SendGCodeButton" Margin="10" Content="Send GCode to Plotter" Grid.Row="3" Click="SendGCode" IsEnabled="False"/>
+        <ScrollViewer Margin="10" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="3">
+            <TextBox x:Name="Ausgabe" TextWrapping="Wrap" SelectionChanged="Ausgabe_SelectionChanged">
+                SVG-Information
+            </TextBox>
+        </ScrollViewer>
+        <ScrollViewer Margin="10" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="4">
+            <TextBox x:Name="AusgabeGcode" TextWrapping="Wrap" SelectionChanged="AusgabeGCode_SelectionChanged">
+                GCode-Information
+            </TextBox>
+        </ScrollViewer>
+        <Button x:Name="Delete" Content="Stop" Margin="10" Grid.Row="4" Grid.Column="0" Click="DeletButtonClick" IsEnabled="False"/>
+        <Image x:Name="Vorschau" Margin="10" Grid.Row="5" Grid.RowSpan="4"/>
+        <ProgressBar x:Name="ProgressBar1" Margin="10" Minimum="0" Maximum="100" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3"/>
+    </Grid>
+</Window>
